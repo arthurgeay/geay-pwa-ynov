@@ -1,5 +1,6 @@
+import "#config/database.js";
 import Koa from "koa";
-// import Router from "@koa/router";
+import Router from "@koa/router";
 import serve from "koa-static";
 
 const app = new Koa();
