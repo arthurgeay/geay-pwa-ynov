@@ -1,0 +1,22 @@
+{
+  "name": "geay-pwa-ynov",
+  "version": "1.0.0",
+  "description": "Small PWA",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon -r dotenv/config index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@koa/router": "^12.0.0",
+    "dotenv": "^16.0.3",
+    "koa": "^2.13.4",
+    "koa-static": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
