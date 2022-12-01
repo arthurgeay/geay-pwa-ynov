@@ -7,6 +7,12 @@ const routes = [
       { path: "test", component: () => import("pages/TutoPage.vue") },
     ],
   },
+  {
+    path: "/tasklists",
+    children: [
+      { path: "", component: () => import("pages/TaskListsPage.vue") },
+    ],
+  },
 
   // Always leave this as last one,
   // but you can also remove it

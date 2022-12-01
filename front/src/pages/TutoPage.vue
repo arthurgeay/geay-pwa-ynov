@@ -1,5 +1,6 @@
 <template>
   <div class="q-pa-xl">
+    <AppCounter :count="10" @incremented="dumb" />
     <h2>Async hook</h2>
     {{ result }}
     <div v-if="loading">Result are loading wait a bit</div>
@@ -44,8 +45,14 @@
   </div>
 </template>
 <script>
+import AppCounter from "../components/exemple/AppCounter.vue";
+import { getTasks } from "services/tasks";
+
 // Syntax vue2 Option API
 export default {
+  components: {
+    AppCounter,
+  },
   data: () => ({
     visible: false,
     message: "Hello",
@@ -56,7 +63,9 @@ export default {
     result: [],
     loading: false,
   }),
-  mounted() {
+  async mounted() {
+    const test = await getTasks();
+    console.log(test);
     console.log("Component mounted");
   },
   async created() {
@@ -85,6 +94,9 @@ export default {
     },
     toggleHidden() {
       this.visible = !this.visible;
+    },
+    dumb(v) {
+      this.message = `Counter incremented ${v}`;
     },
   },
   watch: {
