@@ -1,5 +1,8 @@
 import TaskList from "#components/task-list/task-list-model.js";
+import Task from "#components/task/task-model.js";
+
 import Joi from "joi";
+import mongoose from "mongoose";
 
 export const index = async (ctx) => {
   try {
@@ -21,6 +24,20 @@ export const show = async (ctx) => {
     }
 
     ctx.ok(taskList);
+  } catch (e) {
+    ctx.badRequest({ message: e.message });
+  }
+};
+
+export const getTasks = async (ctx) => {
+  try {
+    const taskList = await TaskList.findById(ctx.params.id);
+    if (!taskList) {
+      return ctx.notFound({ message: "TaskList not found" });
+    }
+
+    const tasks = await Task.find({ taskList: ctx.params.id });
+    ctx.ok(tasks);
   } catch (e) {
     ctx.badRequest({ message: e.message });
   }

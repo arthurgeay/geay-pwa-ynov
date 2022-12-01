@@ -5,6 +5,7 @@ const taskLists = new Router();
 
 taskLists.get("/", taskListController.index);
 taskLists.get("/:id", taskListController.show);
+taskLists.get("/:id/tasks", taskListController.getTasks);
 taskLists.post("/", taskListController.create);
 taskLists.put("/:id", taskListController.update);
 taskLists.delete("/:id", taskListController.destroy);

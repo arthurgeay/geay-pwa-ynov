@@ -32,7 +32,7 @@ export const create = async (ctx) => {
     const taskSchemaValidation = Joi.object({
       title: Joi.string().required(),
       description: Joi.string(),
-      status: Joi.string().valid("todo", "done").default("todo"),
+      done: Joi.boolean().default(false),
       taskList: Joi.string().required(),
     });
 
@@ -54,7 +54,7 @@ export const update = async (ctx) => {
     const taskSchemaValidation = Joi.object({
       title: Joi.string().required(),
       description: Joi.string(),
-      status: Joi.string().valid("todo", "done").required(),
+      done: Joi.boolean().required(),
       taskList: Joi.string().required(),
     });
 

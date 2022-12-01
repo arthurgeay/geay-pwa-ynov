@@ -11,10 +11,9 @@ const taskSchema = new Schema(
     description: {
       type: String,
     },
-    status: {
-      type: String,
-      enum: ["todo", "done"],
-      default: "todo",
+    done: {
+      type: Boolean,
+      default: false,
     },
     taskList: {
       type: Schema.Types.ObjectId,
