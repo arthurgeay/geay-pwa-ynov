@@ -5,4 +5,4 @@ const getTasks = async () => {
   return response.data;
 };
 
-export { getTasks };
+export default { getTasks };

@@ -26,9 +26,12 @@
     </q-card-section>
 
     <q-card-section>
-      <div class="column" v-if="tasks.length > 0">
+      <div
+        class="column"
+        v-if="tasksStore.filteredTasks(taskList._id).length > 0"
+      >
         <q-checkbox
-          v-for="task in tasks.slice(0, 2)"
+          v-for="task in tasksStore.filteredTasks(taskList._id).slice(0, 2)"
           :key="task._id"
           :label="task.title"
           v-model="task.done"
@@ -42,20 +45,24 @@
 
     <q-separator />
 
-    <q-card-actions class="row justify-center" v-if="tasks.length > 2">
+    <q-card-actions
+      class="row justify-center"
+      v-if="tasksStore.filteredTasks(taskList._id).length > 2"
+    >
       <q-btn flat>Voir la liste complète</q-btn>
     </q-card-actions>
   </q-card>
 </template>
 
 <script setup>
-import taskListService from "services/taskList";
-import { ref } from "vue";
 import { useQuasar } from "quasar";
+import { useTaskListsStore } from "stores/taskLists";
+import { useTasksStore } from "stores/tasks";
+import { computed } from "vue";
 
 const $q = useQuasar();
-
-const tasks = ref([]);
+const taskListsStore = useTaskListsStore();
+const tasksStore = useTasksStore();
 
 const props = defineProps({
   taskList: {
@@ -63,25 +70,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-const emit = defineEmits(["update", "delete"]);
-
-(async () => {
-  tasks.value = await taskListService.getTasksFromTaskList(props.taskList._id);
-})();
-
-const deleteTaskList = async (taskListid) => {
-  try {
-    await taskListService.deleteTaskList(taskListid);
-    emit("delete");
-  } catch {
-    $q.notify({
-      type: "negative",
-      position: "top",
-      message: "Une erreur est survenue lors de la suppression de la liste",
-    });
-  }
-};
 
 const deleteList = (taskList) => {
   $q.dialog({
@@ -92,7 +80,16 @@ const deleteList = (taskList) => {
     persistent: true,
   })
     .onOk(async () => {
-      await deleteTaskList(taskList._id);
+      try {
+        await taskListsStore.delete(taskList._id);
+      } catch (e) {
+        console.log(e);
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Une erreur est survenue lors de la suppression de la liste",
+        });
+      }
     })
     .onOk(() => {
       // console.log('>>>> second OK catcher')
@@ -111,7 +108,7 @@ const updateTaskList = (taskList) => {
     message: "Nom de la liste",
     prompt: {
       model: taskList.title,
-      //   isValid: (v) => v && v.length > 0,
+      isValid: (v) => v && v.length > 0,
       type: "text", // optional
     },
     ok: "Modifier",
@@ -120,8 +117,7 @@ const updateTaskList = (taskList) => {
   })
     .onOk(async (data) => {
       try {
-        await taskListService.updateTaskList(taskList._id, data);
-        emit("update");
+        await taskListsStore.update(taskList._id, data);
       } catch (e) {
         $q.notify({
           type: "negative",

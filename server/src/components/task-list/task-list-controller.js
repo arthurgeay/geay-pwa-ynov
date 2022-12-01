@@ -29,20 +29,6 @@ export const show = async (ctx) => {
   }
 };
 
-export const getTasks = async (ctx) => {
-  try {
-    const taskList = await TaskList.findById(ctx.params.id);
-    if (!taskList) {
-      return ctx.notFound({ message: "TaskList not found" });
-    }
-
-    const tasks = await Task.find({ taskList: ctx.params.id });
-    ctx.ok(tasks);
-  } catch (e) {
-    ctx.badRequest({ message: e.message });
-  }
-};
-
 export const create = async (ctx) => {
   try {
     const taskListSchemaValidation = Joi.object({
@@ -96,10 +82,14 @@ export const destroy = async (ctx) => {
     if (!mongoose.isValidObjectId(ctx.params.id))
       return ctx.notFound({ message: "Not a valid id. TaskList not found." });
 
-    const taskList = await TaskList.findByIdAndDelete(ctx.params.id);
+    const taskList = await TaskList.findById(ctx.params.id);
+
     if (!taskList) {
       return ctx.notFound({ message: "TaskList not found" });
     }
+
+    await Task.find({ taskList: taskList._id }).deleteMany();
+    await taskList.deleteOne();
 
     ctx.noContent();
   } catch (e) {

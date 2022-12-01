@@ -5,11 +5,6 @@ const getTaskLists = async () => {
   return response.data;
 };
 
-const getTasksFromTaskList = async (taskListId) => {
-  const response = await api.get(`/task-lists/${taskListId}/tasks`);
-  return response.data;
-};
-
 const createTaskList = async (title) => {
   const response = await api.post("/task-lists", { title });
   return response.data;
@@ -27,7 +22,6 @@ const deleteTaskList = async (taskListId) => {
 
 export default {
   getTaskLists,
-  getTasksFromTaskList,
   createTaskList,
   updateTaskList,
   deleteTaskList,

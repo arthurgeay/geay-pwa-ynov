@@ -9,6 +9,7 @@ const routes = [
   },
   {
     path: "/tasklists",
+    component: () => import("layouts/MainLayout.vue"),
     children: [
       { path: "", component: () => import("pages/TaskListsPage.vue") },
     ],

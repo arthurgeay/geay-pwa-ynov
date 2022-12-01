@@ -1,33 +1,48 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
+    <q-drawer v-model="drawer" show-if-above bordered>
+      <div class="q-pa-md">
+        <h2 class="text-h4">Mes listes</h2>
+        <q-btn
+          color="primary"
+          class="q-mb-md full-width"
+          label="Créer une liste"
+          @click="createTaskList"
+        />
+        <q-list>
+          <div v-for="taskList in taskListsStore.taskLists" :key="taskList._id">
+            <q-item clickable v-ripple class="q-pa-none">
+              <q-item-section>
+                <q-item-label> {{ taskList.title }}</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-separator />
+          </div>
+        </q-list>
+      </div>
+    </q-drawer>
+
+    <q-footer>
+      <div class="row justify-around">
         <q-btn
           flat
-          dense
           round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
+          dense
+          icon="subject"
+          size="1.5em"
+          @click="toggleDrawer"
         />
-
-        <q-toolbar-title> Quasar App </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Essential Links </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
+        <q-btn
+          flat
+          round
+          dense
+          icon="add"
+          size="1.5em"
+          @click="createTaskList()"
         />
-      </q-list>
-    </q-drawer>
+        <q-btn flat round dense icon="person" size="1.5em" />
+      </div>
+    </q-footer>
 
     <q-page-container>
       <router-view />
@@ -35,72 +50,57 @@
   </q-layout>
 </template>
 
-<script>
-import { defineComponent, ref } from "vue";
-import EssentialLink from "components/EssentialLink.vue";
+<script setup>
+import { ref } from "vue";
+import taskListService from "services/taskList";
+import { useQuasar } from "quasar";
 
-const linksList = [
-  {
-    title: "Docs",
-    caption: "quasar.dev",
-    icon: "school",
-    link: "https://quasar.dev",
-  },
-  {
-    title: "Github",
-    caption: "github.com/quasarframework",
-    icon: "code",
-    link: "https://github.com/quasarframework",
-  },
-  {
-    title: "Discord Chat Channel",
-    caption: "chat.quasar.dev",
-    icon: "chat",
-    link: "https://chat.quasar.dev",
-  },
-  {
-    title: "Forum",
-    caption: "forum.quasar.dev",
-    icon: "record_voice_over",
-    link: "https://forum.quasar.dev",
-  },
-  {
-    title: "Twitter",
-    caption: "@quasarframework",
-    icon: "rss_feed",
-    link: "https://twitter.quasar.dev",
-  },
-  {
-    title: "Facebook",
-    caption: "@QuasarFramework",
-    icon: "public",
-    link: "https://facebook.quasar.dev",
-  },
-  {
-    title: "Quasar Awesome",
-    caption: "Community Quasar projects",
-    icon: "favorite",
-    link: "https://awesome.quasar.dev",
-  },
-];
+import { useTaskListsStore } from "stores/taskLists";
+import { useTasksStore } from "stores/tasks";
 
-export default defineComponent({
-  name: "MainLayout",
+const taskListsStore = useTaskListsStore();
+const tasksStore = useTasksStore();
 
-  components: {
-    EssentialLink,
-  },
+(async () => {
+  await taskListsStore.getCollection();
+  await tasksStore.getCollection();
+})();
 
-  setup() {
-    const leftDrawerOpen = ref(false);
+const drawer = ref(false);
+const $q = useQuasar();
 
-    return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
-    };
-  },
-});
+const toggleDrawer = () => {
+  drawer.value = !drawer.value;
+};
+
+const createTaskList = () => {
+  $q.dialog({
+    title: "Créer une nouvelle liste",
+    message: "Nom de la liste",
+    prompt: {
+      model: "",
+      isValid: (v) => v && v.length > 0,
+      type: "text", // optional
+    },
+    ok: "Créer",
+    cancel: "Annuler",
+  })
+    .onOk(async (data) => {
+      try {
+        await taskListsStore.create(data);
+      } catch (e) {
+        $q.notify({
+          type: "negative",
+          message: "Une erreur est survenue lors de la création de la liste",
+          position: "top",
+        });
+      }
+    })
+    .onCancel(() => {
+      // console.log('>>>> Cancel')
+    })
+    .onDismiss(() => {
+      // console.log('I am triggered on both OK and Cancel')
+    });
+};
 </script>
