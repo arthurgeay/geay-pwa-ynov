@@ -10,8 +10,13 @@
           @click="createTaskList"
         />
         <q-list>
-          <div v-for="taskList in taskListsStore.taskLists" :key="taskList._id">
-            <q-item clickable v-ripple class="q-pa-none">
+          <div v-for="taskList in taskLists" :key="taskList._id">
+            <q-item
+              clickable
+              v-ripple
+              class="q-pa-none"
+              @click="$router.push(`/tasklists/${taskList._id}`)"
+            >
               <q-item-section>
                 <q-item-label> {{ taskList.title }}</q-item-label>
               </q-item-section>
@@ -51,20 +56,22 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import taskListService from "services/taskList";
+import { ref, onMounted } from "vue";
 import { useQuasar } from "quasar";
 
 import { useTaskListsStore } from "stores/taskLists";
 import { useTasksStore } from "stores/tasks";
+import { storeToRefs } from "pinia";
 
 const taskListsStore = useTaskListsStore();
 const tasksStore = useTasksStore();
 
-(async () => {
+onMounted(async () => {
   await taskListsStore.getCollection();
   await tasksStore.getCollection();
-})();
+});
+
+const { taskLists } = storeToRefs(taskListsStore);
 
 const drawer = ref(false);
 const $q = useQuasar();

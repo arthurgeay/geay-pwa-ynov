@@ -1,9 +1,11 @@
 import { defineStore } from "pinia";
 import taskListService from "services/taskList";
+import { useTasksStore } from "./tasks";
 
 export const useTaskListsStore = defineStore("taskLists", {
   state: () => ({
     taskLists: [],
+    taskList: null,
   }),
 
   getters: {},
@@ -11,6 +13,9 @@ export const useTaskListsStore = defineStore("taskLists", {
   actions: {
     async getCollection() {
       this.taskLists = await taskListService.getTaskLists();
+    },
+    async get(id) {
+      this.taskList = await taskListService.getTaskList(id);
     },
     async create(data) {
       const task = await taskListService.createTaskList(data);
@@ -23,10 +28,18 @@ export const useTaskListsStore = defineStore("taskLists", {
       );
 
       this.taskLists[indexToUpdate] = updatedTaskList;
+
+      if (this.taskList && this.taskList._id === id) {
+        this.taskList = updatedTaskList;
+      }
     },
     async delete(id) {
+      const tasksStore = useTasksStore();
       await taskListService.deleteTaskList(id);
       this.taskLists = this.taskLists.filter((taskList) => taskList._id !== id);
+      tasksStore.tasks = tasksStore.tasks.filter(
+        (task) => task.taskList !== id
+      );
     },
   },
 });

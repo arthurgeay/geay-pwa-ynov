@@ -7,8 +7,8 @@
         </div>
 
         <div class="col-auto">
-          <q-btn color="grey-7" round flat icon="more_vert">
-            <q-menu cover auto-close>
+          <q-btn color="grey-7" round flat icon="more_horiz">
+            <q-menu auto-close>
               <q-list>
                 <q-item clickable @click="updateTaskList(taskList)">
                   <q-item-section>Editer</q-item-section>
@@ -45,11 +45,10 @@
 
     <q-separator />
 
-    <q-card-actions
-      class="row justify-center"
-      v-if="tasksStore.filteredTasks(taskList._id).length > 2"
-    >
-      <q-btn flat>Voir la liste complète</q-btn>
+    <q-card-actions class="row justify-center">
+      <q-btn flat @click="$router.push(`/tasklists/${taskList._id}`)"
+        >Voir la liste complète</q-btn
+      >
     </q-card-actions>
   </q-card>
 </template>
@@ -58,7 +57,6 @@
 import { useQuasar } from "quasar";
 import { useTaskListsStore } from "stores/taskLists";
 import { useTasksStore } from "stores/tasks";
-import { computed } from "vue";
 
 const $q = useQuasar();
 const taskListsStore = useTaskListsStore();
