@@ -27,7 +27,7 @@
                   >Editer</q-item-section
                 >
               </q-item>
-              <q-item clickable @click="deleteList(taskList)">
+              <q-item clickable @click="deleteTask(taskList._id, task)">
                 <q-item-section class="text-negative">Supprimer</q-item-section>
               </q-item>
             </q-list>
@@ -52,11 +52,14 @@
 </template>
 <script setup>
 import { onMounted, computed } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useTaskListsStore } from "stores/taskLists";
 import { useTasksStore } from "stores/tasks";
+import { useQuasar } from "quasar";
 
 const { params } = useRoute();
+const { push } = useRouter();
+const $q = useQuasar();
 const taskListsStore = useTaskListsStore();
 const tasksStore = useTasksStore();
 
@@ -67,4 +70,36 @@ onMounted(async () => {
   await taskListsStore.get(params.taskListId);
   await tasksStore.get(params.taskId);
 });
+
+const deleteTask = (taskListId, task) => {
+  $q.dialog({
+    title: "Supprimer la tâche",
+    message: `Vous êtes sur le point de supprimer cette tâche "${task.title}". Êtes vous sûr de vouloir faire ça ?`,
+    cancel: "Annuler",
+    ok: "Supprimer",
+    persistent: true,
+  })
+    .onOk(async () => {
+      try {
+        await tasksStore.delete(task._id);
+        push(`/tasklists/${taskListId}`);
+      } catch (e) {
+        console.log(e);
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Une erreur est survenue lors de la suppression de la tâche",
+        });
+      }
+    })
+    .onOk(() => {
+      // console.log('>>>> second OK catcher')
+    })
+    .onCancel(() => {
+      // console.log('>>>> Cancel')
+    })
+    .onDismiss(() => {
+      // console.log('I am triggered on both OK and Cancel')
+    });
+};
 </script>

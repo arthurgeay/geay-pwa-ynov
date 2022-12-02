@@ -25,4 +25,9 @@ const updateTask = async (taskId, title, description, done, taskList) => {
   return response.data;
 };
 
-export default { getTasks, getTask, createTask, updateTask };
+const deleteTask = async (id) => {
+  const response = await api.delete(`/tasks/${id}`);
+  return response.data;
+};
+
+export default { getTasks, getTask, createTask, updateTask, deleteTask };

@@ -50,5 +50,9 @@ export const useTasksStore = defineStore("tasks", {
 
       await this.getCollection();
     },
+    async delete(id) {
+      await tasksService.deleteTask(id);
+      await this.getCollection();
+    },
   },
 });
