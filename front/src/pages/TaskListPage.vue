@@ -30,7 +30,6 @@
 
     <q-page-container>
       <q-page class="q-pa-md">
-        <!-- <q-btn @click="test">Créer test</q-btn> -->
         <div
           class="column"
           v-if="
@@ -44,15 +43,30 @@
               tasksStore.getUncompletedTasks(taskListsStore.taskList._id).length
             }}
           </p>
-          <q-checkbox
+          <div
+            class="row justify-between"
             v-for="task in tasksStore.getUncompletedTasks(
               taskListsStore.taskList._id
             )"
             :key="task._id"
-            :label="task.title"
-            v-model="task.done"
-            @click.prevent="toggleStatus(task)"
-          />
+          >
+            <q-checkbox
+              :label="task.title"
+              v-model="task.done"
+              @click.prevent="toggleStatus(task)"
+            />
+            <q-btn
+              color="grey-7"
+              round
+              flat
+              icon="visibility"
+              @click="
+                $router.push(
+                  `/tasklists/${taskListsStore.taskList._id}/tasks/${task._id}`
+                )
+              "
+            />
+          </div>
 
           <p class="q-mt-md text-bold">
             Tâches terminées -
@@ -60,15 +74,30 @@
               tasksStore.getCompletedTasks(taskListsStore.taskList._id).length
             }}
           </p>
-          <q-checkbox
+          <div
+            class="row justify-between"
             v-for="task in tasksStore.getCompletedTasks(
               taskListsStore.taskList._id
             )"
             :key="task._id"
-            :label="task.title"
-            v-model="task.done"
-            @click.prevent="toggleStatus(task)"
-          />
+          >
+            <q-checkbox
+              :label="task.title"
+              v-model="task.done"
+              @click.prevent="toggleStatus(task)"
+            />
+            <q-btn
+              color="grey-7"
+              round
+              flat
+              icon="visibility"
+              @click="
+                $router.push(
+                  `/tasklists/${taskListsStore.taskList._id}/tasks/${task._id}`
+                )
+              "
+            />
+          </div>
         </div>
 
         <q-footer class="">

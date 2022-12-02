@@ -5,11 +5,15 @@ import { useTaskListsStore } from "./taskLists";
 export const useTasksStore = defineStore("tasks", {
   state: () => ({
     tasks: [],
+    task: null,
   }),
 
   actions: {
     async getCollection() {
       this.tasks = await tasksService.getTasks();
+    },
+    async get(id) {
+      this.task = await tasksService.getTask(id);
     },
     filteredTasks(taskListId) {
       return this.tasks.filter((task) => task.taskList === taskListId);

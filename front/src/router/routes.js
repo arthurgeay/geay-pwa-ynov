@@ -24,6 +24,10 @@ const routes = [
       { path: "create", component: () => import("pages/CreateTaskPage.vue") },
     ],
   },
+  {
+    path: "/tasklists/:taskListId/tasks/:taskId",
+    children: [{ path: "", component: () => import("pages/TaskPage.vue") }],
+  },
 
   // Always leave this as last one,
   // but you can also remove it
