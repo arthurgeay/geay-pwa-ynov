@@ -35,6 +35,7 @@
           :key="task._id"
           :label="task.title"
           v-model="task.done"
+          @click="toggleStatus(task)"
         />
       </div>
 
@@ -69,6 +70,10 @@ defineProps({
   },
 });
 
+const toggleStatus = async (task) => {
+  await tasksStore.update(task);
+};
+
 const deleteList = (taskList) => {
   $q.dialog({
     title: "Supprimer la liste",
@@ -81,7 +86,6 @@ const deleteList = (taskList) => {
       try {
         await taskListsStore.delete(taskList._id);
       } catch (e) {
-        console.log(e);
         $q.notify({
           type: "negative",
           position: "top",

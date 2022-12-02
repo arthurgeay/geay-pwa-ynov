@@ -16,16 +16,16 @@ export const useTasksStore = defineStore("tasks", {
       this.task = await tasksService.getTask(id);
     },
     filteredTasks(taskListId) {
-      return this.tasks.filter((task) => task.taskList === taskListId);
+      return this.tasks.filter((task) => task.taskList._id === taskListId);
     },
     getUncompletedTasks(taskListId) {
       return this.tasks.filter(
-        (task) => task.taskList === taskListId && !task.done
+        (task) => task.taskList._id === taskListId && !task.done
       );
     },
     getCompletedTasks(taskListId) {
       return this.tasks.filter(
-        (task) => task.taskList === taskListId && task.done
+        (task) => task.taskList._id === taskListId && task.done
       );
     },
     async create(title, description) {
@@ -40,7 +40,7 @@ export const useTasksStore = defineStore("tasks", {
       await this.getCollection();
     },
     async update(task) {
-      await tasksService.updateTask(
+      const updatedTask = await tasksService.updateTask(
         task._id,
         task.title,
         task.description ? task.description : " ",
@@ -49,6 +49,10 @@ export const useTasksStore = defineStore("tasks", {
       );
 
       await this.getCollection();
+
+      if (this.task && this.task._id === task._id) {
+        this.task = updatedTask;
+      }
     },
     async delete(id) {
       await tasksService.deleteTask(id);

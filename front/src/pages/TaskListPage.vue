@@ -119,7 +119,7 @@ onMounted(async () => {
 });
 
 const toggleStatus = async (task) => {
-  await tasksStore.update({ done: !task.done, ...task });
+  await tasksStore.update(task);
 };
 
 const updateTaskList = (taskList) => {

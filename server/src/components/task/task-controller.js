@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 export const index = async (ctx) => {
   try {
-    const tasks = await Task.find();
+    const tasks = await Task.find().populate("taskList");
     ctx.ok(tasks);
   } catch (err) {
     ctx.badRequest({ message: err.message });

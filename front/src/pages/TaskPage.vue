@@ -84,7 +84,6 @@ const deleteTask = (taskListId, task) => {
         await tasksStore.delete(task._id);
         push(`/tasklists/${taskListId}`);
       } catch (e) {
-        console.log(e);
         $q.notify({
           type: "negative",
           position: "top",
