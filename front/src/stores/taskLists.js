@@ -18,16 +18,12 @@ export const useTaskListsStore = defineStore("taskLists", {
       this.taskList = await taskListService.getTaskList(id);
     },
     async create(data) {
-      const task = await taskListService.createTaskList(data);
-      this.taskLists.push(task);
+      await taskListService.createTaskList(data);
+      await this.getCollection();
     },
     async update(id, data) {
       const updatedTaskList = await taskListService.updateTaskList(id, data);
-      const indexToUpdate = this.taskLists.findIndex(
-        (taskList) => taskList._id === id
-      );
-
-      this.taskLists[indexToUpdate] = updatedTaskList;
+      await this.getCollection();
 
       if (this.taskList && this.taskList._id === id) {
         this.taskList = updatedTaskList;
@@ -36,10 +32,9 @@ export const useTaskListsStore = defineStore("taskLists", {
     async delete(id) {
       const tasksStore = useTasksStore();
       await taskListService.deleteTaskList(id);
-      this.taskLists = this.taskLists.filter((taskList) => taskList._id !== id);
-      tasksStore.tasks = tasksStore.tasks.filter(
-        (task) => task.taskList !== id
-      );
+
+      await this.getCollection();
+      await tasksStore.getCollection();
     },
   },
 });

@@ -47,7 +47,7 @@
   </q-layout>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useTaskListsStore } from "stores/taskLists";
 import { useTasksStore } from "stores/tasks";

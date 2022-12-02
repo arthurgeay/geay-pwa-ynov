@@ -50,11 +50,10 @@
   </q-layout>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useTaskListsStore } from "stores/taskLists";
 import { useTasksStore } from "src/stores/tasks";
 import { useQuasar } from "quasar";
-import { storeToRefs } from "pinia";
 import { useRoute, useRouter } from "vue-router";
 
 const title = ref("");
@@ -67,7 +66,7 @@ const $q = useQuasar();
 const { push } = useRouter();
 const { params } = useRoute();
 
-const { taskList } = storeToRefs(taskListsStore);
+const taskList = computed(() => taskListsStore.taskList);
 
 onMounted(async () => {
   await taskListsStore.get(params.id);

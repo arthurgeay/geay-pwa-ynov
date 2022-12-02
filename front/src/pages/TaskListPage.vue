@@ -8,18 +8,15 @@
     <q-header class="bg-white text-dark">
       <q-toolbar>
         <q-icon name="arrow_back_ios" @click="$router.push(`/tasklists`)" />
-        <q-toolbar-title>{{ taskListsStore.taskList?.title }}</q-toolbar-title>
+        <q-toolbar-title>{{ taskList?.title }}</q-toolbar-title>
 
         <q-btn color="grey-7" round flat icon="more_horiz">
           <q-menu auto-close>
             <q-list>
-              <q-item
-                clickable
-                @click="updateTaskList(taskListsStore.taskList)"
-              >
+              <q-item clickable @click="updateTaskList(taskList)">
                 <q-item-section>Editer</q-item-section>
               </q-item>
-              <q-item clickable @click="deleteList(taskListsStore.taskList)">
+              <q-item clickable @click="deleteList(taskList)">
                 <q-item-section class="text-negative">Supprimer</q-item-section>
               </q-item>
             </q-list>
@@ -32,22 +29,15 @@
       <q-page class="q-pa-md">
         <div
           class="column"
-          v-if="
-            taskListsStore.taskList &&
-            tasksStore.filteredTasks(taskListsStore.taskList._id).length > 0
-          "
+          v-if="taskList && tasksStore.filteredTasks(taskList._id).length > 0"
         >
           <p class="text-bold">
             Tâches à réaliser -
-            {{
-              tasksStore.getUncompletedTasks(taskListsStore.taskList._id).length
-            }}
+            {{ tasksStore.getUncompletedTasks(taskList._id).length }}
           </p>
           <div
             class="row justify-between"
-            v-for="task in tasksStore.getUncompletedTasks(
-              taskListsStore.taskList._id
-            )"
+            v-for="task in tasksStore.getUncompletedTasks(taskList._id)"
             :key="task._id"
           >
             <q-checkbox
@@ -61,24 +51,18 @@
               flat
               icon="visibility"
               @click="
-                $router.push(
-                  `/tasklists/${taskListsStore.taskList._id}/tasks/${task._id}`
-                )
+                $router.push(`/tasklists/${taskList._id}/tasks/${task._id}`)
               "
             />
           </div>
 
           <p class="q-mt-md text-bold">
             Tâches terminées -
-            {{
-              tasksStore.getCompletedTasks(taskListsStore.taskList._id).length
-            }}
+            {{ tasksStore.getCompletedTasks(taskList._id).length }}
           </p>
           <div
             class="row justify-between"
-            v-for="task in tasksStore.getCompletedTasks(
-              taskListsStore.taskList._id
-            )"
+            v-for="task in tasksStore.getCompletedTasks(taskList._id)"
             :key="task._id"
           >
             <q-checkbox
@@ -92,9 +76,7 @@
               flat
               icon="visibility"
               @click="
-                $router.push(
-                  `/tasklists/${taskListsStore.taskList._id}/tasks/${task._id}`
-                )
+                $router.push(`/tasklists/${taskList._id}/tasks/${task._id}`)
               "
             />
           </div>
@@ -108,11 +90,7 @@
               dense
               icon="add"
               size="1.5em"
-              @click="
-                $router.push(
-                  `/tasklists/${taskListsStore.taskList._id}/tasks/create`
-                )
-              "
+              @click="$router.push(`/tasklists/${taskList._id}/tasks/create`)"
             />
           </div>
         </q-footer>
@@ -125,7 +103,7 @@
 import { useTaskListsStore } from "stores/taskLists";
 import { useTasksStore } from "stores/tasks";
 import { useQuasar } from "quasar";
-import { onMounted } from "vue";
+import { onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const { params } = useRoute();
@@ -133,6 +111,8 @@ const { push } = useRouter();
 const taskListsStore = useTaskListsStore();
 const tasksStore = useTasksStore();
 const $q = useQuasar();
+
+const taskList = computed(() => taskListsStore.taskList);
 
 onMounted(async () => {
   await taskListsStore.get(params.id);

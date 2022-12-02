@@ -21,7 +21,7 @@
         </h1>
 
         <TaskListCard
-          v-for="taskList in taskListsStore.taskLists"
+          v-for="taskList in taskLists"
           :key="taskList._id"
           :taskList="taskList"
         />
@@ -33,6 +33,8 @@
 <script setup>
 import TaskListCard from "../components/TaskList/TaskListCard.vue";
 import { useTaskListsStore } from "stores/taskLists";
+import { computed } from "vue";
 
 const taskListsStore = useTaskListsStore();
+const taskLists = computed(() => taskListsStore.taskLists);
 </script>

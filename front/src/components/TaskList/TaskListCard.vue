@@ -62,7 +62,7 @@ const $q = useQuasar();
 const taskListsStore = useTaskListsStore();
 const tasksStore = useTasksStore();
 
-const props = defineProps({
+defineProps({
   taskList: {
     type: Object,
     required: true,

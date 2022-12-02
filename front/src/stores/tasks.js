@@ -31,13 +31,13 @@ export const useTasksStore = defineStore("tasks", {
     async create(title, description) {
       const taskListsStore = useTaskListsStore();
 
-      const task = await tasksService.createTask(
+      await tasksService.createTask(
         title,
         description,
         taskListsStore.taskList._id
       );
 
-      this.tasks.push(task);
+      await this.getCollection();
     },
     async update(taskId, task) {
       const updatedTask = await tasksService.updateTask(
@@ -48,9 +48,7 @@ export const useTasksStore = defineStore("tasks", {
         task.taskList
       );
 
-      const indexToUpdate = this.tasks.findIndex((task) => task._id === taskId);
-
-      this.tasks[indexToUpdate] = updatedTask;
+      await this.getCollection();
     },
   },
 });

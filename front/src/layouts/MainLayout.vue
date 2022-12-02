@@ -56,12 +56,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useQuasar } from "quasar";
 
 import { useTaskListsStore } from "stores/taskLists";
 import { useTasksStore } from "stores/tasks";
-import { storeToRefs } from "pinia";
 
 const taskListsStore = useTaskListsStore();
 const tasksStore = useTasksStore();
@@ -71,7 +70,7 @@ onMounted(async () => {
   await tasksStore.getCollection();
 });
 
-const { taskLists } = storeToRefs(taskListsStore);
+const taskLists = computed(() => taskListsStore.taskLists);
 
 const drawer = ref(false);
 const $q = useQuasar();
