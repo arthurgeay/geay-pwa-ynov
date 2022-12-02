@@ -26,7 +26,10 @@ const routes = [
   },
   {
     path: "/tasklists/:taskListId/tasks/:taskId",
-    children: [{ path: "", component: () => import("pages/TaskPage.vue") }],
+    children: [
+      { path: "", component: () => import("pages/TaskPage.vue") },
+      { path: "edit", component: () => import("pages/UpdateTaskPage.vue") },
+    ],
   },
 
   // Always leave this as last one,

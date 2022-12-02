@@ -39,13 +39,13 @@ export const useTasksStore = defineStore("tasks", {
 
       await this.getCollection();
     },
-    async update(taskId, task) {
-      const updatedTask = await tasksService.updateTask(
-        taskId,
+    async update(task) {
+      await tasksService.updateTask(
+        task._id,
         task.title,
-        task.description,
+        task.description ? task.description : " ",
         task.done,
-        task.taskList
+        task.taskList._id
       );
 
       await this.getCollection();
