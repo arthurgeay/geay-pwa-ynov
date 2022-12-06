@@ -36,9 +36,12 @@
             {{ tasksStore.getUncompletedTasks(taskList._id).length }}
           </p>
           <div
-            class="row justify-between"
+            class="row justify-between task-item"
             v-for="task in tasksStore.getUncompletedTasks(taskList._id)"
             :key="task._id"
+            @click="
+              $router.push(`/tasklists/${taskList._id}/tasks/${task._id}`)
+            "
           >
             <q-checkbox
               :label="task.title"
@@ -46,15 +49,6 @@
               color="positive"
               :class="task.done ? 'text-strike' : ''"
               @click.prevent="toggleStatus(task)"
-            />
-            <q-btn
-              color="grey-7"
-              round
-              flat
-              icon="visibility"
-              @click="
-                $router.push(`/tasklists/${taskList._id}/tasks/${task._id}`)
-              "
             />
           </div>
 
@@ -63,9 +57,12 @@
             {{ tasksStore.getCompletedTasks(taskList._id).length }}
           </p>
           <div
-            class="row justify-between"
+            class="row justify-between task-item"
             v-for="task in tasksStore.getCompletedTasks(taskList._id)"
             :key="task._id"
+            @click="
+              $router.push(`/tasklists/${taskList._id}/tasks/${task._id}`)
+            "
           >
             <q-checkbox
               :label="task.title"
@@ -74,28 +71,19 @@
               :class="task.done ? 'text-strike' : ''"
               @click.prevent="toggleStatus(task)"
             />
-            <q-btn
-              color="grey-7"
-              round
-              flat
-              icon="visibility"
-              @click="
-                $router.push(`/tasklists/${taskList._id}/tasks/${task._id}`)
-              "
-            />
           </div>
         </div>
 
-        <q-footer class="">
+        <q-footer class="bg-transparent q-pa-md">
           <div class="row justify-center">
             <q-btn
               flat
               round
-              dense
-              icon="add"
-              size="1.5em"
+              class="add-btn"
               @click="$router.push(`/tasklists/${taskList._id}/tasks/create`)"
-            />
+            >
+              <q-icon name="add" size="lg" />
+            </q-btn>
           </div>
         </q-footer>
       </q-page>
@@ -191,3 +179,22 @@ const deleteList = (taskList) => {
     });
 };
 </script>
+
+<style scoped>
+.q-checkbox {
+  background: #f2f2f2;
+  margin-bottom: 2px;
+}
+
+.task-item {
+  background: #f2f2f2;
+  margin-bottom: 13px;
+  border-radius: 10px;
+  height: 55px;
+}
+
+footer .q-btn {
+  width: 57px;
+  height: 57px;
+}
+</style>

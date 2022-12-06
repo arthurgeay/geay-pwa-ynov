@@ -12,8 +12,9 @@
       <div class="q-pa-md">
         <h2 class="text-h4">Mes listes</h2>
         <q-btn
+          no-caps
           color="primary"
-          class="q-mb-md full-width"
+          class="q-mb-md full-width text-bold"
           label="Créer une liste"
           @click="createTaskList"
         />
@@ -26,7 +27,9 @@
               @click="$router.push(`/tasklists/${taskList._id}`)"
             >
               <q-item-section>
-                <q-item-label> {{ taskList.title }}</q-item-label>
+                <q-item-label class="text-bold">
+                  {{ taskList.title }}</q-item-label
+                >
               </q-item-section>
             </q-item>
             <q-separator />
@@ -52,7 +55,7 @@
           dense
           icon="add"
           size="1.5em"
-          class="bg-add"
+          class="add-btn"
           @click="createTaskList()"
         />
         <q-btn flat round dense icon="person" size="1.5em" color="grey" />
@@ -91,6 +94,7 @@ const toggleDrawer = () => {
 
 const createTaskList = () => {
   $q.dialog({
+    classes: "toto",
     title: "Créer une nouvelle liste",
     message: "Nom de la liste",
     prompt: {
@@ -121,8 +125,4 @@ const createTaskList = () => {
 };
 </script>
 
-<style scoped>
-.bg-add {
-  background: linear-gradient(125.54deg, #613973 -0.39%, #bb46e4 100%);
-}
-</style>
+<style scoped></style>

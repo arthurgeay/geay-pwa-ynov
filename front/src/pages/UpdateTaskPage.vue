@@ -17,11 +17,12 @@
           </q-toolbar>
         </q-header>
 
-        <q-form @submit="onSubmit" class="q-gutter-md">
+        <q-form @submit="onSubmit" class="q-gutter-md q-mt-md">
+          <p class="text-bold">Nom de la tâche</p>
           <q-input
-            filled
+            outlined
             v-model="task.title"
-            label="Titre de la tâche"
+            placeholder="Titre de la tâche"
             lazy-rules
             :rules="[
               (val) =>
@@ -29,23 +30,26 @@
             ]"
           />
 
+          <p class="text-bold">Description</p>
           <q-input
-            filled
+            outlined
             v-model="task.description"
             lazy-rules
-            label="Description"
+            placeholder="Description"
           />
 
+          <p class="text-bold">Déplacer la tâche dans une autre liste</p>
           <q-select
+            outlined
             v-model="task.taskList"
             :options="taskLists"
             option-label="title"
-            label="Déplacer la tâche dans une autre liste"
           />
 
           <div class="row">
             <q-btn
-              class="full-width"
+              no-caps
+              class="full-width text-bold"
               label="Modifier"
               type="submit"
               color="primary"

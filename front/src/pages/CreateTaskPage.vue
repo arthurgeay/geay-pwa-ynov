@@ -17,11 +17,13 @@
           </q-toolbar>
         </q-header>
 
-        <q-form @submit="onSubmit" class="q-gutter-md">
+        <q-form @submit="onSubmit" class="q-gutter-md q-mt-md">
+          <p class="text-bold">Nom de la tâche</p>
           <q-input
-            filled
+            outlined
+            dense
             v-model="title"
-            label="Titre de la tâche"
+            placeholder="Titre de la tâche"
             lazy-rules
             :rules="[
               (val) =>
@@ -29,16 +31,19 @@
             ]"
           />
 
+          <p class="text-bold">Description</p>
           <q-input
-            filled
+            outlined
+            autogrow
             v-model="description"
             lazy-rules
-            label="Description"
+            placeholder="Description"
           />
 
           <div class="row">
             <q-btn
-              class="full-width"
+              no-caps
+              class="full-width text-bold"
               label="Créer"
               type="submit"
               color="primary"

@@ -39,7 +39,7 @@
     <q-page-container>
       <q-page class="q-pa-md">
         <p class="text-grey-6 q-mb-none">Tâche</p>
-        <p class="text-h4">{{ task?.title }}</p>
+        <p class="text-h5">{{ task?.title }}</p>
 
         <p class="text-grey-6 q-mb-none">Description</p>
         <p>{{ task?.description }}</p>
