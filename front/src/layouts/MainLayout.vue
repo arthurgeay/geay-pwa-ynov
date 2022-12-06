@@ -1,5 +1,13 @@
 <template>
   <q-layout view="lHh Lpr lFf">
+    <q-header class="bg-white text-dark">
+      <q-toolbar>
+        <q-toolbar-title class="text-bold">Dashboard</q-toolbar-title>
+
+        <q-btn flat round dense icon="account_circle" />
+      </q-toolbar>
+    </q-header>
+
     <q-drawer v-model="drawer" show-if-above bordered>
       <div class="q-pa-md">
         <h2 class="text-h4">Mes listes</h2>
@@ -27,13 +35,14 @@
       </div>
     </q-drawer>
 
-    <q-footer>
+    <q-footer class="bg-white q-pa-md">
       <div class="row justify-around">
         <q-btn
           flat
           round
           dense
           icon="subject"
+          color="grey"
           size="1.5em"
           @click="toggleDrawer"
         />
@@ -43,9 +52,10 @@
           dense
           icon="add"
           size="1.5em"
+          class="bg-add"
           @click="createTaskList()"
         />
-        <q-btn flat round dense icon="person" size="1.5em" />
+        <q-btn flat round dense icon="person" size="1.5em" color="grey" />
       </div>
     </q-footer>
 
@@ -110,3 +120,9 @@ const createTaskList = () => {
     });
 };
 </script>
+
+<style scoped>
+.bg-add {
+  background: linear-gradient(125.54deg, #613973 -0.39%, #bb46e4 100%);
+}
+</style>

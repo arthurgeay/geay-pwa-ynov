@@ -1,33 +1,16 @@
 <template>
-  <q-layout
-    view="lHh lpr lFf"
-    container
-    style="height: 100vh"
-    class="shadow-2 rounded-border"
-  >
-    <q-header class="bg-white text-dark">
-      <q-toolbar>
-        <q-toolbar-title>Dashboard</q-toolbar-title>
+  <q-page class="q-pa-md">
+    <h1 class="text-h4 text-bold q-mb-xl">
+      Bonjour,<br />
+      Tom Dupont ! 👋
+    </h1>
 
-        <q-btn flat round dense icon="account_circle" />
-      </q-toolbar>
-    </q-header>
-
-    <q-page-container>
-      <q-page class="q-pa-md">
-        <h1 class="text-h4">
-          Bonjour,<br />
-          Tom Dupont ! 👋
-        </h1>
-
-        <TaskListCard
-          v-for="taskList in taskLists"
-          :key="taskList._id"
-          :taskList="taskList"
-        />
-      </q-page>
-    </q-page-container>
-  </q-layout>
+    <TaskListCard
+      v-for="taskList in taskLists"
+      :key="taskList._id"
+      :taskList="taskList"
+    />
+  </q-page>
 </template>
 
 <script setup>

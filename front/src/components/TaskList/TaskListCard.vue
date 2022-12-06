@@ -1,9 +1,9 @@
 <template>
-  <q-card bordered class="q-mt-lg">
-    <q-card-section class="bg-grey-1">
+  <q-card bordered class="card q-mt-lg">
+    <q-card-section class="bg-grey-2">
       <div class="row items-center no-wrap">
         <div class="col">
-          <div class="text-h6">{{ taskList.title }}</div>
+          <div class="text-h6 text-bold">{{ taskList.title }}</div>
         </div>
 
         <div class="col-auto">
@@ -32,9 +32,11 @@
       >
         <q-checkbox
           v-for="task in tasksStore.filteredTasks(taskList._id).slice(0, 2)"
+          :class="task.done ? 'text-strike' : ''"
           :key="task._id"
           :label="task.title"
           v-model="task.done"
+          color="positive"
           @click="toggleStatus(task)"
         />
       </div>
@@ -47,7 +49,7 @@
     <q-separator />
 
     <q-card-actions class="row justify-center">
-      <q-btn flat @click="$router.push(`/tasklists/${taskList._id}`)"
+      <q-btn flat no-caps @click="$router.push(`/tasklists/${taskList._id}`)"
         >Voir la liste complète</q-btn
       >
     </q-card-actions>
@@ -137,3 +139,9 @@ const updateTaskList = (taskList) => {
     });
 };
 </script>
+
+<style scoped>
+.card {
+  border-radius: 10px;
+}
+</style>

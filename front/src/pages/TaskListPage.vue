@@ -43,6 +43,8 @@
             <q-checkbox
               :label="task.title"
               v-model="task.done"
+              color="positive"
+              :class="task.done ? 'text-strike' : ''"
               @click.prevent="toggleStatus(task)"
             />
             <q-btn
@@ -68,6 +70,8 @@
             <q-checkbox
               :label="task.title"
               v-model="task.done"
+              color="positive"
+              :class="task.done ? 'text-strike' : ''"
               @click.prevent="toggleStatus(task)"
             />
             <q-btn
