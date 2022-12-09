@@ -5,18 +5,23 @@
     style="height: 100vh"
     class="shadow-2 rounded-border"
   >
+    <ActionHeader>
+      <q-icon
+        class="back-btn"
+        name="arrow_back_ios_new"
+        @click="$router.push(`/tasklists/${taskList._id}`)"
+      />
+      <q-toolbar-title>Mettre à jour une tâche</q-toolbar-title>
+      <q-btn
+        flat
+        no-caps
+        label="Annuler"
+        @click="$router.push(`/tasklists/${taskList._id}`)"
+      />
+    </ActionHeader>
+
     <q-page-container>
       <q-page class="q-pa-md">
-        <q-header class="bg-white text-dark">
-          <q-toolbar>
-            <q-icon
-              name="arrow_back_ios"
-              @click="$router.push(`/tasklists/${taskList._id}`)"
-            />
-            <q-toolbar-title>Mettre à jour une tâche</q-toolbar-title>
-          </q-toolbar>
-        </q-header>
-
         <q-form @submit="onSubmit" class="q-gutter-md q-mt-md">
           <p class="text-bold">Nom de la tâche</p>
           <q-input
@@ -66,6 +71,7 @@ import { useTaskListsStore } from "stores/taskLists";
 import { useTasksStore } from "src/stores/tasks";
 import { useQuasar } from "quasar";
 import { useRoute, useRouter } from "vue-router";
+import ActionHeader from "../components/ActionHeader.vue";
 
 const taskListsStore = useTaskListsStore();
 const tasksStore = useTasksStore();

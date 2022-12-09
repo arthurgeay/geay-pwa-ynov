@@ -5,25 +5,27 @@
     style="height: 100vh"
     class="shadow-2 rounded-border"
   >
-    <q-header class="bg-white text-dark">
-      <q-toolbar>
-        <q-icon name="arrow_back_ios" @click="$router.push(`/tasklists`)" />
-        <q-toolbar-title>{{ taskList?.title }}</q-toolbar-title>
+    <ActionHeader>
+      <q-icon
+        class="back-btn"
+        name="arrow_back_ios_new"
+        @click="$router.push(`/tasklists`)"
+      />
+      <q-toolbar-title>{{ taskList?.title }}</q-toolbar-title>
 
-        <q-btn color="grey-7" round flat icon="more_horiz">
-          <q-menu auto-close>
-            <q-list>
-              <q-item clickable @click="updateTaskList(taskList)">
-                <q-item-section>Editer</q-item-section>
-              </q-item>
-              <q-item clickable @click="deleteList(taskList)">
-                <q-item-section class="text-negative">Supprimer</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
-      </q-toolbar>
-    </q-header>
+      <q-btn color="grey-7" round flat icon="more_horiz">
+        <q-menu auto-close>
+          <q-list>
+            <q-item clickable @click="updateTaskList(taskList)">
+              <q-item-section>Editer</q-item-section>
+            </q-item>
+            <q-item clickable @click="deleteList(taskList)">
+              <q-item-section class="text-negative">Supprimer</q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
+      </q-btn>
+    </ActionHeader>
 
     <q-page-container>
       <q-page class="q-pa-md">
@@ -97,6 +99,7 @@ import { useTasksStore } from "stores/tasks";
 import { useQuasar } from "quasar";
 import { onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import ActionHeader from "../components/ActionHeader.vue";
 
 const { params } = useRoute();
 const { push } = useRouter();
