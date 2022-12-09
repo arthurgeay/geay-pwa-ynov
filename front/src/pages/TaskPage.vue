@@ -80,16 +80,8 @@ const deleteTask = (taskListId, task) => {
     persistent: true,
   })
     .onOk(async () => {
-      try {
-        await tasksStore.delete(task._id);
-        push(`/tasklists/${taskListId}`);
-      } catch (e) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Une erreur est survenue lors de la suppression de la tâche",
-        });
-      }
+      await tasksStore.delete(task._id);
+      push(`/tasklists/${taskListId}`);
     })
     .onOk(() => {
       // console.log('>>>> second OK catcher')

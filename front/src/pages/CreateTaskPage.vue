@@ -64,7 +64,6 @@
 import { ref, onMounted, computed } from "vue";
 import { useTaskListsStore } from "stores/taskLists";
 import { useTasksStore } from "src/stores/tasks";
-import { useQuasar } from "quasar";
 import { useRoute, useRouter } from "vue-router";
 import ActionHeader from "../components/ActionHeader.vue";
 
@@ -74,7 +73,6 @@ const description = ref(" ");
 const taskListsStore = useTaskListsStore();
 const tasksStore = useTasksStore();
 
-const $q = useQuasar();
 const { push } = useRouter();
 const { params } = useRoute();
 
@@ -85,16 +83,7 @@ onMounted(async () => {
 });
 
 const onSubmit = async () => {
-  try {
-    await tasksStore.create(title.value, description.value);
-    push(`/tasklists/${params.id}`);
-  } catch (error) {
-    console.log(error);
-    $q.notify({
-      message: "Une erreur est survenue lors de la création de la tâche",
-      color: "negative",
-      position: "top",
-    });
-  }
+  await tasksStore.create(title.value, description.value);
+  push(`/tasklists/${params.id}`);
 };
 </script>

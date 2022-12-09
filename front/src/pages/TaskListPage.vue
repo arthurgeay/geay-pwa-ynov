@@ -76,6 +76,12 @@
           </div>
         </div>
 
+        <div v-else class="column">
+          <h2 class="text-h5 text-bold">
+            Vous n'avez pas encore créé de tâche. Créez en une dès maintenant !
+          </h2>
+        </div>
+
         <q-footer class="bg-transparent q-pa-md">
           <div class="row justify-center">
             <q-btn
@@ -150,17 +156,8 @@ const deleteList = (taskList) => {
     persistent: true,
   })
     .onOk(async () => {
-      try {
-        await taskListsStore.delete(taskList._id);
-        push("/tasklists");
-      } catch (e) {
-        console.log(e);
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Une erreur est survenue lors de la suppression de la liste",
-        });
-      }
+      await taskListsStore.delete(taskList._id);
+      push("/tasklists");
     })
     .onOk(() => {
       // console.log('>>>> second OK catcher')

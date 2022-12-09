@@ -69,7 +69,6 @@
 import { computed } from "vue";
 import { useTaskListsStore } from "stores/taskLists";
 import { useTasksStore } from "src/stores/tasks";
-import { useQuasar } from "quasar";
 import { useRoute, useRouter } from "vue-router";
 import ActionHeader from "../components/ActionHeader.vue";
 
@@ -79,20 +78,11 @@ const taskList = computed(() => taskListsStore.taskList);
 const taskLists = computed(() => taskListsStore.taskLists);
 const task = computed(() => tasksStore.task);
 
-const $q = useQuasar();
 const { push } = useRouter();
 const { params } = useRoute();
 
 const onSubmit = async () => {
-  try {
-    await tasksStore.update(task.value);
-    push(`/tasklists/${params.taskListId}`);
-  } catch (error) {
-    $q.notify({
-      message: "Une erreur est survenue lors de la mise à jour de la tâche",
-      color: "negative",
-      position: "top",
-    });
-  }
+  await tasksStore.update(task.value);
+  push(`/tasklists/${params.taskListId}`);
 };
 </script>
