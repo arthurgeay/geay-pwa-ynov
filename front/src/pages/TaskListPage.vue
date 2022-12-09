@@ -131,16 +131,7 @@ const updateTaskList = (taskList) => {
     maximized: true,
   })
     .onOk(async (data) => {
-      try {
-        await taskListsStore.update(taskList._id, data);
-      } catch (e) {
-        $q.notify({
-          type: "negative",
-          message:
-            "Une erreur est survenue lors de la modification de la liste",
-          position: "top",
-        });
-      }
+      await taskListsStore.update(taskList._id, data);
     })
     .onCancel(() => {
       // console.log('>>>> Cancel')

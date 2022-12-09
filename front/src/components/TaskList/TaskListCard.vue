@@ -95,9 +95,6 @@ const deleteList = (taskList) => {
         });
       }
     })
-    .onOk(() => {
-      // console.log('>>>> second OK catcher')
-    })
     .onCancel(() => {
       // console.log('>>>> Cancel')
     })

@@ -106,15 +106,7 @@ const createTaskList = () => {
     cancel: "Annuler",
   })
     .onOk(async (data) => {
-      try {
-        await taskListsStore.create(data);
-      } catch (e) {
-        $q.notify({
-          type: "negative",
-          message: "Une erreur est survenue lors de la création de la liste",
-          position: "top",
-        });
-      }
+      await taskListsStore.create(data);
     })
     .onCancel(() => {
       // console.log('>>>> Cancel')
